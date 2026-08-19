@@ -1,0 +1,75 @@
+[build-system]
+requires = ["setuptools==84.0.0", "wheel==0.48.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nari-qwen3-tts"
+version = "0.1.0"
+description = "A high-performance Qwen3-TTS serving engine"
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+license = "Apache-2.0"
+dependencies = [
+    "huggingface-hub==0.36.2",
+    "PyYAML==6.0.3",
+    "safetensors==0.8.0",
+    "torch==2.13.0",
+    "transformers==4.57.3",
+]
+
+[project.optional-dependencies]
+codec = [
+    "qwen-tts==0.1.1",
+    "torchaudio==2.11.0",
+]
+cuda = [
+    "flashinfer-python==0.6.16.post2",
+    "ninja==1.13.0",
+    "triton==3.7.1",
+]
+serving = [
+    "fastapi==0.141.1",
+    "uvicorn==0.52.3",
+    "websockets==17.0.1",
+]
+test = [
+    "build==1.5.0",
+    "pytest==9.1.1",
+    "ruff==0.16.0",
+]
+
+[project.scripts]
+nari-qwen3-tts = "nari_qwen3_tts.__main__:main"
+nari-qwen3-tts-server = "nari_qwen3_tts.serve:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["nari_qwen3_tts*"]
+
+[tool.setuptools.package-data]
+nari_qwen3_tts = ["profiles/*.yaml"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["B", "E", "F", "I", "N", "PL", "W"]
+ignore = [
+    "N801",
+    "N802",
+    "N803",
+    "N806",
+    "N812",
+    "PLC0415",
+    "PLR0913",
+    "PLR0917",
+    "PLR2004",
+]
+
+[tool.pytest.ini_options]
+addopts = "-ra"
+testpaths = ["tests"]
+
+[tool.uv]
+required-version = "==0.12.2"

@@ -1,0 +1,37 @@
+services:
+  nari-qwen3-tts:
+    init: true
+    ipc: host
+    build:
+      context: .
+      args:
+        VCS_REF: ${VCS_REF:-unknown}
+    image: nari-qwen3-tts:local
+    ports:
+      - "8000:8000"
+    environment:
+      QWEN3_TTS_MODEL: Qwen/Qwen3-TTS-12Hz-1.7B-CustomVoice
+      QWEN3_TTS_PROFILE: balanced
+      HF_TOKEN: ${HF_TOKEN:-}
+    volumes:
+      - nari-qwen3-tts-cache:/home/nari/.cache
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "--silent", "http://127.0.0.1:8000/health"]
+      interval: 15s
+      timeout: 3s
+      start_period: 600s
+      retries: 5
+
+volumes:
+  nari-qwen3-tts-cache:

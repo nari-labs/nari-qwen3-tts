@@ -1,0 +1,36 @@
+profile: balanced
+required_policy: round_robin
+pressing_lead_s: null
+talker_prefill:
+  max_batch_size: 8
+  batch_sizes: [1, 2, 4, 8]
+  token_buckets: [32, 64, 128, 192, 384, 640]
+  exact_sequence_lengths: [10]
+  exact_batch_sizes: [1, 2, 3, 4, 5, 6, 7, 8]
+talker_decode:
+  max_batch_size: 64
+  batch_sizes: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 24, 32, 40, 48, 56, 64]
+code_predictor:
+  max_batch_size: 64
+  batch_sizes: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 24, 32, 40, 48, 56, 64]
+codec:
+  max_batch_size: 64
+  chunk_schedule: [4, 4, 8, 16, 25]
+  suppressed_bootstrap_chunk_schedule: [4, 4, 8, 16, 25]
+  batches:
+    whole_sequence_first_frame: [1, 2, 4, 8, 16, 32]
+    whole_sequence_followup: [1, 2, 4, 8]
+    cold: [1, 2, 3, 4, 5, 6, 7, 8]
+    cold_terminal_partial: []
+    warm_partial: [1, 2, 3, 4, 5, 6, 7, 8]
+    warm_full: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 24, 32, 40, 48, 56, 64]
+  frames:
+    cold: [4, 5, 6, 7]
+    cold_terminal_partial: []
+    warm: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 25]
+    warm_full: [4, 8, 12, 16, 25]
+    terminal_pad: [12, 25]
+talker_capture_slots: 4
+kv_pages: 256
+kv_page_size: 128
+workspace_bytes: 536870912
